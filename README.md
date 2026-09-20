@@ -22,14 +22,14 @@ flowchart TD
         Alert["TMB09A05 5V Buzzer (GPIO)"]
         PowerSubsystem["2S Li-ion Battery (2x 18650 2600mAh)<br/>- 2S 5A BMS Protection<br/>- Type-C 2S Boost Charger (8.4V)<br/>- AMS1117-5.0V LDO Regulator"]
         
-        PowerSubsystem -->|7.4V - 8.4V| INA219
-        INA219 -->|V_bus / I_shunt| AMS1117
-        AMS1117 -->|5.0V| MCU
-        AMS1117 -->|5.0V| Alert
-        AMS1117 -->|5.0V| Sensors
-        Sensors -->|Data| MCU
-        MCU -->|Render UI| Display
-        MCU -->|Acoustic Alarm| Alert
+        PowerSubsystem -->|"7.4V - 8.4V"| INA219
+        INA219 -->|"V_bus / I_shunt"| AMS1117
+        AMS1117 -->|"5.0V"| MCU
+        AMS1117 -->|"5.0V"| Alert
+        AMS1117 -->|"5.0V"| Sensors
+        Sensors -->|"Data"| MCU
+        MCU -->|"Render UI"| Display
+        MCU -->|"Acoustic Alarm"| Alert
     end
 
     subgraph Tier2["Tier 2: Cloud Middleware (Google Firebase)"]
@@ -44,9 +44,9 @@ flowchart TD
         MobileView["Responsive Mobile UI"]
     end
 
-    MCU -->|Wi-Fi 802.11 b/g/n / HTTPS / WSS| FirebaseRTDB
-    FirebaseRTDB -->|Real-time Data Stream (WebSocket)| WebDashboard
-    FirebaseRTDB -->|Real-time Data Stream (WebSocket)| MobileView
+    MCU -->|"Wi-Fi 802.11 b/g/n / HTTPS / WSS"| FirebaseRTDB
+    FirebaseRTDB -->|"WebSocket Real-time Stream"| WebDashboard
+    FirebaseRTDB -->|"WebSocket Real-time Stream"| MobileView
 ```
 
 ---

@@ -221,16 +221,16 @@ flowchart TD
     Rail5V --> Dust
     Rail5V --> Buzzer
     Rail5V --> Processing
-    Processing -->|3.3V Logic| BME
-    Processing -->|3.3V Logic| INA
+    Processing -->|"3.3V Logic"| BME
+    Processing -->|"3.3V Logic"| INA
     
-    BME -->|I2C: SDA/SCL| Sample
-    INA -->|I2C: SDA/SCL| Sample
-    Dust -->|Analog V_o & I-LED Pulse| Sample
+    BME -->|"I2C: SDA/SCL"| Sample
+    INA -->|"I2C: SDA/SCL"| Sample
+    Dust -->|"Analog Vo & I-LED Pulse"| Sample
     
     Sample --> Filter --> Eval
     Eval --> DisplayDriver --> TFT
-    Eval -->|GPIO Trigger| Buzzer
-    Eval --> CloudDriver -->|Wi-Fi / WSS| Firebase
-    Firebase -->|WebSocket Push| Dashboard
+    Eval -->|"GPIO Trigger"| Buzzer
+    Eval --> CloudDriver -->|"Wi-Fi / WSS"| Firebase
+    Firebase -->|"WebSocket Push"| Dashboard
 ```

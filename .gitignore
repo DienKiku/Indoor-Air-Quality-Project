@@ -1,0 +1,38 @@
+# PlatformIO
+.pio
+.pioenvs
+.piolibdeps
+
+# VS Code & IDEs
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Secrets & Environment Configurations
+firebase_config.h
+*.env
+*.env.local
+*.key
+*.pem
+
+# Build artifacts & Binaries
+*.bin
+*.elf
+*.hex
+*.o
+*.a
+*.d
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Data
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

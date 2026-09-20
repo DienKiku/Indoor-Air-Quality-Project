@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "iaq_stations": {
+      ".read": true,
+      "$station_id": {
+        ".write": true,
+        "current": {
+          ".validate": "newData.hasChildren(['environment', 'power', 'alerts'])"
+        },
+        "history": {
+          "$record_id": {
+            ".validate": "newData.hasChildren(['timestamp', 'pm25_ug_m3', 'temperature_c'])"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "device_id": "ESP32C3_STATION_01",
+  "timestamp": 1726848000,
+  "environment": {
+    "temperature_c": 26.5,
+    "humidity_pct": 58.4,
+    "pressure_hpa": 1012.8,
+    "gas_resistance_kohm": 145.2,
+    "pm25_ug_m3": 18.6,
+    "iaq_status": "GOOD"
+  },
+  "power": {
+    "bus_voltage_v": 7.92,
+    "current_ma": 88.5,
+    "power_mw": 700.92,
+    "battery_percentage": 80
+  },
+  "alerts": {
+    "is_alert": false,
+    "alert_reason": "NONE"
+  }
+}

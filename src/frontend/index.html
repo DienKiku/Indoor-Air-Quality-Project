@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indoor Air Quality & Energy Monitor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Chart.js for real-time telemetry graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDK (v9/v10 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-brand">
+                <div class="status-indicator live" id="live-indicator"></div>
+                <h1>Indoor Air Quality & Energy Monitor</h1>
+            </div>
+            <div class="device-status">
+                <span class="badge" id="station-id-badge">Station: ESP32C3_STATION_01</span>
+                <span class="badge" id="last-update-badge">Last Update: --:--:--</span>
+            </div>
+        </header>
+
+        <!-- Alert Banner -->
+        <div class="alert-banner good" id="alert-banner">
+            <span class="alert-icon" id="alert-icon">✓</span>
+            <span class="alert-text" id="alert-text">Indoor air quality is optimal. All parameters within safe limits.</span>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <!-- PM2.5 Dust Card -->
+            <div class="metric-card primary-card">
+                <div class="card-header">
+                    <h3>PM2.5 Dust Density</h3>
+                    <span class="sensor-tag">Sharp GP2Y1010</span>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value-container">
+                        <span class="metric-value" id="pm25-val">--.-</span>
+                        <span class="metric-unit">&mu;g/m&sup3;</span>
+                    </div>
+                    <div class="metric-status" id="pm25-status">Good (0 - 35)</div>
+                </div>
+            </div>
+
+            <!-- VOC Gas Resistance Card -->
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>VOC Gas Resistance</h3>
+                    <span class="sensor-tag">Bosch BME680</span>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value-container">
+                        <span class="metric-value" id="voc-val">--.-</span>
+                        <span class="metric-unit">k&Omega;</span>
+                    </div>
+                    <div class="metric-status" id="voc-status">Clean Air (> 80k)</div>
+                </div>
+            </div>
+
+            <!-- Temperature Card -->
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Temperature</h3>
+                    <span class="sensor-tag">BME680</span>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value-container">
+                        <span class="metric-value" id="temp-val">--.-</span>
+                        <span class="metric-unit">&deg;C</span>
+                    </div>
+                    <div class="metric-status" id="temp-status">Comfortable</div>
+                </div>
+            </div>
+
+            <!-- Humidity Card -->
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Relative Humidity</h3>
+                    <span class="sensor-tag">BME680</span>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value-container">
+                        <span class="metric-value" id="hum-val">--.-</span>
+                        <span class="metric-unit">%</span>
+                    </div>
+                    <div class="metric-status" id="hum-status">Normal (40-60%)</div>
+                </div>
+            </div>
+
+            <!-- Barometric Pressure Card -->
+            <div class="metric-card">
+                <div class="card-header">
+                    <h3>Pressure</h3>
+                    <span class="sensor-tag">BME680</span>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value-container">
+                        <span class="metric-value" id="press-val">----</span>
+                        <span class="metric-unit">hPa</span>
+                    </div>
+                    <div class="metric-status">Atmospheric</div>
+                </div>
+            </div>
+
+            <!-- 2S Battery & Energy Card -->
+            <div class="metric-card power-card">
+                <div class="card-header">
+                    <h3>2S Battery Telemetry</h3>
+                    <span class="sensor-tag">INA219</span>
+                </div>
+                <div class="card-body">
+                    <div class="battery-bar-container">
+                        <div class="battery-bar-fill" id="battery-fill" style="width: 80%;"></div>
+                    </div>
+                    <div class="power-details">
+                        <span>Voltage: <strong id="bat-volts">--.-- V</strong></span>
+                        <span>Current: <strong id="bat-current">-- mA</strong></span>
+                        <span>SoC: <strong id="bat-pct">--%</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Telemetry Charts Section -->
+        <section class="chart-section">
+            <h2>Real-time Environmental Telemetry</h2>
+            <div class="chart-container">
+                <canvas id="telemetryChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Indoor Air Quality & Energy Monitoring IoT Platform | ESP32-C3 Super Mini & Google Firebase</p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

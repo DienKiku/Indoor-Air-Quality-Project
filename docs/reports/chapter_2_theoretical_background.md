@@ -60,10 +60,12 @@ The Sharp GP2Y1010AU0F dust sensor employs the **light scattering principle**. I
    - Pulse period $T = 10 \, ms$.
    - Pulse duration $\tau = 0.32 \, ms$ ($320 \, \mu s$).
    - Sampling instant $t_{sample} = 0.28 \, ms$ ($280 \, \mu s$) from pulse initiation.
-5. **Transfer Function:** The empirical relationship between output voltage $V_o$ and particulate mass concentration $D$ ($\mu g/m^3$) is modeled linearly as:
-   $$V_o = k \cdot D + V_{clean}$$
-   $$\implies D = \frac{V_o - V_{clean}}{k}$$
-   where $k \approx 0.0005 \, V / (\mu g/m^3)$ ($0.5V \text{ per } 100 \mu g/m^3$), and $V_{clean} \approx 0.6V - 0.9V$ is the zero-dust offset voltage.
+5. **Transfer Function & Hardware Scaling:** Because the sensor output $V_o$ can reach $\approx 4.5V - 5.0V$, a resistive voltage divider steps the signal down to the ESP32-C3 ADC range ($\le 3.3V$), introducing a scaling correction factor of $1.5\times$:
+   $$V_{Vo} = V_{ADC} \times 1.5$$
+   The calibrated particulate mass concentration $D$ (in $\text{mg/m}^3$) is calculated as:
+   $$D \, (\text{mg/m}^3) = \max\left(0.0, \; 0.17 \times V_{Vo} - 0.1\right)$$
+   and converted to standard $\mu\text{g/m}^3$ via:
+   $$D \, (\mu\text{g/m}^3) = D \, (\text{mg/m}^3) \times 1000$$
 
 ### 2.2.2. Metal Oxide Semiconductor (MOX) Gas Sensing: Bosch BME680
 The BME680 integrates an ambient temperature sensor, capacitive humidity sensor, piezoresistive barometric pressure sensor, and a metal-oxide (MOX) gas sensor onto a single monolithic silicon die.

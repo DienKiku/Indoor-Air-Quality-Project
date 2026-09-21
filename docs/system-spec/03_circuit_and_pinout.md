@@ -1,37 +1,45 @@
 # 03. Circuit Schematics & Pinout Mapping
 
-## 1. Pin Assignment Table
+## 1. Visual Circuit Schematic Diagram
 
-The ESP32-C3 Super Mini features 11 exposed GPIO pins. Below is the optimized pin mapping designed to avoid bus conflicts and ensure stable high-speed SPI and I2C operations:
+Below is the complete hardware schematic diagram generated from the verified KiCad engineering schematic (`hardware/schematics/1.kicad_sch`):
 
-| ESP32-C3 Pin | Connected Component | Component Pin | Function / Protocol | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| **GPIO 8** | BME680 & INA219 | SDA | I2C Data (SDA) | Shared I2C data line (with 4.7k$\Omega$ pull-ups) |
-| **GPIO 9** | BME680 & INA219 | SCL | I2C Clock (SCL) | Shared I2C clock line (with 4.7k$\Omega$ pull-ups) |
-| **GPIO 6** | 1.8" ST7735 TFT | SDA / MOSI | Hardware SPI MOSI | Display data transmission |
-| **GPIO 4** | 1.8" ST7735 TFT | SCL / SCK | Hardware SPI Clock | Display clock signal |
-| **GPIO 7** | 1.8" ST7735 TFT | CS | SPI Chip Select | Display active-low selection |
-| **GPIO 10** | 1.8" ST7735 TFT | DC / A0 | Data / Command | Selects display command vs display data |
-| **GPIO 3** | 1.8" ST7735 TFT | RES / RST | Reset | Display hardware reset line |
-| **GPIO 5** | 1.8" ST7735 TFT | BL / LED | Backlight Control | Backlight enable / PWM dimming |
-| **GPIO 1** | Sharp GP2Y1010AU0F | Pin 3 (LED) | Digital Output | Pulses infrared emitter diode (IRED) |
-| **GPIO 0** | Sharp GP2Y1010AU0F | Pin 5 ($V_o$) | Analog Input (ADC1_CH0) | Reads scattered light analog voltage |
-| **GPIO 2** | TMB09A05 Buzzer | Base of NPN BJT | Digital / PWM Output | Triggers acoustic alarm |
-| **5V (VIN)** | AMS1117-5.0V | VOUT | Power Input | Supplies regulated 5V to MCU board |
-| **3.3V** | BME680, INA219, TFT | VCC / VDD | Power Output | 3.3V rail from on-board LDO |
-| **GND** | All Modules | GND | Common Ground | System-wide reference ground |
+![Hardware Circuit Schematic](../../hardware/schematics/circuit_schematic.svg)
 
 ---
 
-## 2. Sensor Interfacing Schematics
+## 2. Verified Pin Assignment Table
 
-### 2.1. Sharp GP2Y1010AU0F Wiring
-The Sharp GP2Y1010AU0F requires an external RC circuit to drive its internal infrared LED:
-- **Pin 1 ($V_{LED}$):** Connected to +5V through a $150 \Omega$ resistor (1/2W). A $220 \mu F$ capacitor is placed between Pin 1 and GND to buffer high-current pulses.
+The hardware prototype board connects the ESP32-C3 Super Mini to all peripherals using the verified pin mapping below:
+
+| ESP32-C3 Pin | Connected Peripheral | Peripheral Pin | Interface / Protocol | Functional Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **GPIO 6** | BME680 & INA219 | SDA | Hardware I2C (SDA) | Shared bi-directional I2C serial data line |
+| **GPIO 7** | BME680 & INA219 | SCL | Hardware I2C (SCL) | Shared I2C serial clock line |
+| **GPIO 9** | 1.8" ST7735 TFT | SDA / MOSI | Hardware SPI (MOSI) | Serial display pixel data input |
+| **GPIO 8** | 1.8" ST7735 TFT | SCL / SCK | Hardware SPI (SCK) | Serial display clock signal |
+| **GPIO 21** | 1.8" ST7735 TFT | CS | Digital Output (SPI CS) | Display active-low chip select |
+| **GPIO 20** | 1.8" ST7735 TFT | DC / A0 | Digital Output (Data/Cmd)| Data/Command selection pin |
+| **GPIO 10** | 1.8" ST7735 TFT | RES / RST | Digital Output (Reset) | Display hardware reset line |
+| **GPIO 5** | 1.8" ST7735 TFT | BLK / LED | Digital Output / PWM | Backlight enable & brightness control |
+| **GPIO 3** | Sharp GP2Y1010AU0F | Pin 3 (LED) | Digital Output (Active LOW)| Pulses infrared emitting diode (IRED) |
+| **GPIO 4** | Sharp GP2Y1010AU0F | Pin 5 ($V_o$) | Analog Input (ADC1_CH4) | Scaled analog voltage from optical dust chamber |
+| **GPIO 2** | Acoustic Buzzer Circuit| Base of Q1 (2SC1815)| Digital Output (HIGH=ON)| Drives active buzzer via NPN transistor |
+| **5V (VIN)** | AMS1117-5.0V LDO | VOUT | Power Input (+5.0V) | Main regulated power rail to MCU board |
+| **3.3V** | BME680, INA219, TFT | VCC / VDD | Power Rail (+3.3V) | Logic supply rail from ESP32-C3 onboard LDO |
+| **GND** | All Modules | GND | Common System Ground | Common 0V reference ground across all circuits |
+
+---
+
+## 3. Sensor Interfacing Schematics
+
+### 3.1. Sharp GP2Y1010AU0F Wiring
+The Sharp GP2Y1010AU0F requires an external RC pulse driving network and a voltage divider:
+- **Pin 1 ($V_{LED}$):** Connected to +5V through a $150 \Omega$ or $240 \Omega$ current-limiting resistor with a $220 \mu F$ bypass capacitor to GND.
 - **Pin 2 ($LED\text{-}GND$):** Connected to Common GND.
-- **Pin 3 ($LED$):** Connected to ESP32-C3 **GPIO 1**. When driven LOW, the internal IRED is activated.
+- **Pin 3 ($LED$):** Connected to ESP32-C3 **GPIO 3** (`DUST_LED_PIN`). Driven LOW for $280\mu s$ before ADC sampling.
 - **Pin 4 ($S\text{-}GND$):** Connected to Common GND.
-- **Pin 5 ($V_o$):** Analog output voltage, connected directly to ESP32-C3 **GPIO 0** (ADC1_CH0).
+- **Pin 5 ($V_o$):** Analog output voltage, routed through a resistive voltage divider to scale to $\le 3.3V$ and read via ESP32-C3 **GPIO 4** (`DUST_VO_PIN`).
 - **Pin 6 ($V_{cc}$):** Connected to +5V regulated rail.
 
 ```

@@ -68,11 +68,26 @@ flowchart TD
 
 ---
 
-## 3. Repository Structure & Documentation
+## 3. Hardware Circuit Schematic
+
+The circuit schematic has been designed in KiCad and verified on physical prototype board:
+
+![Hardware Circuit Schematic](hardware/schematics/circuit_schematic.svg)
+
+> **KiCad Design Source Files:** Available in [`hardware/schematics/`](hardware/schematics/) (`1.kicad_sch`, `1.kicad_pro`, `New_Library_1.kicad_sym`).
+
+---
+
+## 4. Repository Structure & Documentation
 
 This repository is organized into distinct functional directories:
 
 ```text
+├── hardware/
+│   └── schematics/                # KiCad CAD schematic & visual SVG diagram
+│       ├── 1.kicad_sch            # KiCad schematic source file
+│       ├── 1.kicad_pro            # KiCad project file
+│       └── circuit_schematic.svg  # Rendered SVG visual diagram
 ├── docs/
 │   ├── system-spec/               # Technical system specifications
 │   │   ├── 01_system_architecture.md
@@ -87,7 +102,8 @@ This repository is organized into distinct functional directories:
 │   ├── weekly-reports/            # Weekly progress tracking
 │   │   ├── weekly_report_template.md
 │   │   ├── week-01.md
-│   │   └── week-02.md
+│   │   ├── week-02.md
+│   │   └── week-03.md
 │   └── reports/                   # Academic & Engineering Project Reports
 │       ├── chapter_1_introduction.md
 │       ├── chapter_2_theoretical_background.md
@@ -96,6 +112,7 @@ This repository is organized into distinct functional directories:
 │       └── chapter_5_conclusion_future_work.md
 └── src/
     ├── firmware/                  # ESP32-C3 C/C++ firmware (PlatformIO)
+    ├── test/                      # Standalone test firmware (offline_display_test.ino)
     ├── cloud-firebase/            # Firebase RTDB rules and sample payloads
     └── frontend/                  # Web Dashboard application (HTML5/CSS3/JS)
 ```

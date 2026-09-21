@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 950" width="100%" height="100%" style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+  <defs>
+    <style>
+      .title { font-size: 22px; font-weight: bold; fill: #1e293b; }
+      .subtitle { font-size: 14px; fill: #64748b; }
+      .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 6; }
+      .box-header { fill: #e2e8f0; stroke: #334155; stroke-width: 1.5; }
+      .box-title { font-size: 14px; font-weight: bold; fill: #0f172a; text-anchor: middle; }
+      .box-sub { font-size: 11px; fill: #475569; text-anchor: middle; }
+      .pin-label { font-size: 12px; fill: #1e293b; }
+      .pin-label-r { font-size: 12px; fill: #1e293b; text-anchor: end; }
+      .wire { stroke: #0284c7; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .wire-pwr { stroke: #dc2626; stroke-width: 2; fill: none; }
+      .wire-gnd { stroke: #1e293b; stroke-width: 2; fill: none; }
+      .wire-i2c { stroke: #16a34a; stroke-width: 2; fill: none; }
+      .wire-spi { stroke: #9333ea; stroke-width: 2; fill: none; }
+      .wire-analog { stroke: #ea580c; stroke-width: 2; fill: none; }
+      .junction { fill: #0284c7; }
+      .junction-pwr { fill: #dc2626; }
+      .junction-gnd { fill: #1e293b; }
+      .net-flag { font-size: 11px; font-weight: 600; fill: #0369a1; }
+      .legend-text { font-size: 12px; fill: #334155; }
+    </style>
+  </defs>
+
+  <!-- Title Block -->
+  <rect x="40" y="25" width="1320" height="65" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="60" y="55" class="title">INDOOR AIR QUALITY &amp; ENERGY MONITORING - HARDWARE SCHEMATIC</text>
+  <text x="60" y="75" class="subtitle">Platform: ESP32-C3 Super Mini | Sensors: BME680 (I2C), GP2Y1010AU0F (ADC), INA219 (I2C) | Display: ST7735 1.8" (SPI) | Power: 2S Li-ion 7.4V</text>
+
+  <!-- ==================== 1. MCU: ESP32-C3 Super Mini ==================== -->
+  <rect x="520" y="160" width="260" height="420" class="box" stroke="#0284c7" stroke-width="2.5" fill="#f0f9ff"/>
+  <rect x="520" y="160" width="260" height="35" class="box-header" fill="#bae6fd" stroke="#0284c7"/>
+  <text x="650" y="182" class="box-title" fill="#0369a1">U2: ESP32-C3 Super Mini</text>
+  <text x="650" y="210" class="box-sub">32-bit RISC-V @ 160MHz | 4MB Flash</text>
+
+  <!-- Left Pins of MCU -->
+  <text x="530" y="245" class="pin-label">GPIO2 (BUZZER)</text>
+  <text x="530" y="280" class="pin-label">GPIO3 (PM2.5_D / IRED)</text>
+  <text x="530" y="315" class="pin-label">GPIO4 (PM2.5_A / ADC)</text>
+  <text x="530" y="350" class="pin-label">GPIO5 (TFT_BL)</text>
+  <text x="530" y="385" class="pin-label">GPIO6 (I2C_SDA)</text>
+  <text x="530" y="420" class="pin-label">GPIO7 (I2C_SCL)</text>
+  <text x="530" y="455" class="pin-label">GND</text>
+  <text x="530" y="490" class="pin-label">3V3</text>
+  <text x="530" y="525" class="pin-label">5V (VIN)</text>
+
+  <!-- Right Pins of MCU -->
+  <text x="770" y="245" class="pin-label-r">GPIO8 (TFT_SCLK)</text>
+  <text x="770" y="280" class="pin-label-r">GPIO9 (TFT_MOSI)</text>
+  <text x="770" y="315" class="pin-label-r">GPIO10 (TFT_RST)</text>
+  <text x="770" y="350" class="pin-label-r">GPIO20 (TFT_DC)</text>
+  <text x="770" y="385" class="pin-label-r">GPIO21 (TFT_CS)</text>
+
+  <!-- ==================== 2. DISPLAY: ST7735 1.8" TFT ==================== -->
+  <rect x="940" y="160" width="220" height="270" class="box" stroke="#9333ea" fill="#faf5ff"/>
+  <rect x="940" y="160" width="220" height="35" class="box-header" fill="#f3e8ff" stroke="#9333ea"/>
+  <text x="1050" y="182" class="box-title" fill="#7e22ce">U5: ST7735 1.8" TFT LCD</text>
+  <text x="1050" y="205" class="box-sub">128x160 SPI Color Display</text>
+
+  <text x="955" y="245" class="pin-label">VCC (3.3V)</text>
+  <text x="955" y="270" class="pin-label">GND</text>
+  <text x="955" y="295" class="pin-label">CS (GPIO21)</text>
+  <text x="955" y="320" class="pin-label">RESET (GPIO10)</text>
+  <text x="955" y="345" class="pin-label">A0 / DC (GPIO20)</text>
+  <text x="955" y="370" class="pin-label">SDA / MOSI (GPIO9)</text>
+  <text x="955" y="395" class="pin-label">SCK (GPIO8)</text>
+  <text x="955" y="420" class="pin-label">LED / BL (GPIO5)</text>
+
+  <!-- SPI Wires -->
+  <line x1="780" y1="240" x2="940" y2="395" class="wire-spi"/>
+  <line x1="780" y1="275" x2="940" y2="370" class="wire-spi"/>
+  <line x1="780" y1="310" x2="940" y2="320" class="wire-spi"/>
+  <line x1="780" y1="345" x2="940" y2="345" class="wire-spi"/>
+  <line x1="780" y1="380" x2="940" y2="295" class="wire-spi"/>
+
+  <!-- Backlight Wire -->
+  <path d="M 520 345 L 480 345 L 480 125 L 900 125 L 900 420 L 940 420" class="wire" stroke="#eab308"/>
+
+  <!-- ==================== 3. SENSORS (I2C): BME680 & INA219 ==================== -->
+  <!-- BME680 -->
+  <rect x="940" y="470" width="220" height="150" class="box" stroke="#16a34a" fill="#f0fdf4"/>
+  <rect x="940" y="470" width="220" height="32" class="box-header" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="1050" y="492" class="box-title" fill="#15803d">U1: Bosch BME680</text>
+  <text x="1050" y="514" class="box-sub">VOC, Temp, Hum, Pressure (I2C: 0x77)</text>
+
+  <text x="955" y="540" class="pin-label">VCC (3.3V)</text>
+  <text x="955" y="565" class="pin-label">GND</text>
+  <text x="955" y="590" class="pin-label">SCL (GPIO7)</text>
+  <text x="955" y="615" class="pin-label">SDA (GPIO6)</text>
+
+  <!-- INA219 -->
+  <rect x="940" y="660" width="220" height="180" class="box" stroke="#0d9488" fill="#f0fdfa"/>
+  <rect x="940" y="660" width="220" height="32" class="box-header" fill="#ccfbf1" stroke="#0d9488"/>
+  <text x="1050" y="682" class="box-title" fill="#0f766e">U3: INA219 Power Sense</text>
+  <text x="1050" y="704" class="box-sub">2S Voltage &amp; Current (I2C: 0x40)</text>
+
+  <text x="955" y="730" class="pin-label">VCC (3.3V)</text>
+  <text x="955" y="755" class="pin-label">GND</text>
+  <text x="955" y="780" class="pin-label">SCL (GPIO7)</text>
+  <text x="955" y="805" class="pin-label">SDA (GPIO6)</text>
+  <text x="955" y="830" class="pin-label">VIN+ (Battery 8.4V)</text>
+
+  <!-- I2C Bus Routing -->
+  <path d="M 520 380 L 460 380 L 460 610 L 940 610" class="wire-i2c"/>
+  <path d="M 520 415 L 440 415 L 440 585 L 940 585" class="wire-i2c"/>
+  <path d="M 460 610 L 460 800 L 940 800" class="wire-i2c"/>
+  <path d="M 440 585 L 440 775 L 940 775" class="wire-i2c"/>
+  <circle cx="460" cy="610" r="4" class="junction" fill="#16a34a"/>
+  <circle cx="440" cy="585" r="4" class="junction" fill="#16a34a"/>
+
+  <!-- ==================== 4. DUST SENSOR: Sharp GP2Y1010AU0F ==================== -->
+  <rect x="80" y="160" width="280" height="230" class="box" stroke="#ea580c" fill="#fff7ed"/>
+  <rect x="80" y="160" width="280" height="35" class="box-header" fill="#ffedd5" stroke="#ea580c"/>
+  <text x="220" y="182" class="box-title" fill="#c2410c">U4: Sharp GP2Y1010AU0F</text>
+  <text x="220" y="205" class="box-sub">Optical PM2.5 Dust Transducer</text>
+
+  <text x="95" y="235" class="pin-label">Pin 1: V-LED (Via 150R + 220uF)</text>
+  <text x="95" y="260" class="pin-label">Pin 2: LED-GND</text>
+  <text x="95" y="285" class="pin-label">Pin 3: LED Drive (GPIO3)</text>
+  <text x="95" y="310" class="pin-label">Pin 4: S-GND</text>
+  <text x="95" y="335" class="pin-label">Pin 5: Vo Analog (GPIO4 via Divider)</text>
+  <text x="95" y="360" class="pin-label">Pin 6: Vcc (+5.0V)</text>
+
+  <!-- Dust Wires -->
+  <path d="M 360 280 L 520 280" class="wire" stroke="#3b82f6"/>
+  <path d="M 360 330 L 520 310" class="wire-analog"/>
+
+  <!-- ==================== 5. BUZZER & TRANSISTOR CIRCUIT ==================== -->
+  <rect x="80" y="440" width="280" height="160" class="box" stroke="#dc2626" fill="#fef2f2"/>
+  <rect x="80" y="440" width="280" height="32" class="box-header" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="220" y="462" class="box-title" fill="#b91c1c">BZ1 &amp; Q1: Acoustic Alarm</text>
+  <text x="220" y="482" class="box-sub">TMB09A05 5V Buzzer + 2SC1815 NPN</text>
+
+  <text x="95" y="515" class="pin-label">Buzzer (+) -> +5.0V Rail</text>
+  <text x="95" y="540" class="pin-label">Buzzer (-) -> Collector (Q1)</text>
+  <text x="95" y="565" class="pin-label">Base (Q1) -> 1k/2k Resistor -> GPIO2</text>
+  <text x="95" y="590" class="pin-label">Emitter (Q1) -> GND</text>
+
+  <path d="M 520 240 L 400 240 L 400 560 L 360 560" class="wire" stroke="#dc2626"/>
+
+  <!-- ==================== 6. POWER MANAGEMENT (2S Li-ion) ==================== -->
+  <rect x="80" y="650" width="400" height="230" class="box" stroke="#16a34a" fill="#f0fdf4"/>
+  <rect x="80" y="650" width="400" height="35" class="box-header" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="280" y="672" class="box-title" fill="#15803d">2S Li-ion Battery &amp; Power Subsystem</text>
+  <text x="280" y="694" class="box-sub">2x 18650 (7.4V - 8.4V) | Type-C Boost | BMS 2S 5A | AMS1117-5.0V</text>
+
+  <!-- Inside Power Box items -->
+  <rect x="100" y="715" width="160" height="45" rx="4" fill="#ffffff" stroke="#15803d"/>
+  <text x="180" y="735" class="box-sub" font-weight="bold">Type-C 2S Charger</text>
+  <text x="180" y="750" font-size="10px" fill="#475569" text-anchor="middle">5V In -> 8.4V 2A Out</text>
+
+  <rect x="290" y="715" width="170" height="45" rx="4" fill="#ffffff" stroke="#15803d"/>
+  <text x="375" y="735" class="box-sub" font-weight="bold">2S 18650 Battery Pack</text>
+  <text x="375" y="750" font-size="10px" fill="#475569" text-anchor="middle">2600mAh + 2S 5A BMS</text>
+
+  <rect x="100" y="785" width="160" height="45" rx="4" fill="#ffffff" stroke="#15803d"/>
+  <text x="180" y="805" class="box-sub" font-weight="bold">AMS1117-5.0V LDO</text>
+  <text x="180" y="820" font-size="10px" fill="#475569" text-anchor="middle">7.4V-8.4V -> Stable 5.0V</text>
+
+  <rect x="290" y="785" width="170" height="45" rx="4" fill="#ffffff" stroke="#0d9488"/>
+  <text x="375" y="805" class="box-sub" font-weight="bold">INA219 Power Sensor</text>
+  <text x="375" y="820" font-size="10px" fill="#475569" text-anchor="middle">Monitors V_bus &amp; Current</text>
+
+  <line x1="260" y1="737" x2="290" y2="737" class="wire-pwr"/>
+  <line x1="375" y1="760" x2="375" y2="785" class="wire-pwr"/>
+  <line x1="290" y1="807" x2="260" y2="807" class="wire-pwr"/>
+
+  <!-- 5V Rail Output to MCU -->
+  <path d="M 180 830 L 180 910 L 500 910 L 500 525 L 520 525" class="wire-pwr"/>
+  <text x="340" y="902" class="net-flag" fill="#dc2626">+5.0V Regulated Rail to MCU, GP2Y1010, &amp; Buzzer</text>
+
+  <!-- ==================== 7. LEGEND & NOTES ==================== -->
+  <rect x="620" y="650" width="280" height="230" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="760" y="675" class="box-title" fill="#334155">Wire Protocol Legend</text>
+
+  <line x1="640" y1="705" x2="700" y2="705" class="wire-i2c"/>
+  <text x="715" y="710" class="legend-text">I2C Bus (SDA: GPIO6, SCL: GPIO7)</text>
+
+  <line x1="640" y1="735" x2="700" y2="735" class="wire-spi"/>
+  <text x="715" y="740" class="legend-text">SPI Bus (ST7735 TFT: MOSI/SCK/CS/DC/RST)</text>
+
+  <line x1="640" y1="765" x2="700" y2="765" class="wire-analog"/>
+  <text x="715" y="770" class="legend-text">Analog Signal (PM2.5 Vo -> GPIO4)</text>
+
+  <line x1="640" y1="795" x2="700" y2="795" class="wire"/>
+  <text x="715" y="800" class="legend-text">Digital Control (LED Pulse, BLK, Buzzer)</text>
+
+  <line x1="640" y1="825" x2="700" y2="825" class="wire-pwr"/>
+  <text x="715" y="830" class="legend-text">Power Rails (+5V, +3.3V, Battery 7.4V-8.4V)</text>
+
+  <line x1="640" y1="855" x2="700" y2="855" class="wire-gnd"/>
+  <text x="715" y="860" class="legend-text">Common System Ground (GND)</text>
+</svg>

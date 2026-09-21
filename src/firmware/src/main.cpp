@@ -125,6 +125,7 @@ void initHardware() {
     // 1. Configure GPIOs
     pinMode(DUST_LED_PIN, OUTPUT);
     digitalWrite(DUST_LED_PIN, HIGH); // Active LOW for IRED
+    analogSetAttenuation(ADC_11db);   // Full scale ADC ~3.3V
 
     pinMode(BUZZER_PIN, OUTPUT);
     digitalWrite(BUZZER_PIN, LOW);
@@ -206,37 +207,24 @@ void initFirebase() {
 // SENSOR READING IMPLEMENTATIONS
 // ==========================================
 float readSharpDustSensor() {
-    // Pulse IRED LOW
-    digitalWrite(DUST_LED_PIN, LOW);
-    delayMicroseconds(DUST_PULSE_WAIT_US);
-
-    // Sample analog voltage
-    int rawADC = analogRead(DUST_ANALOG_PIN);
-    delayMicroseconds(DUST_SAMPLE_WAIT_US);
-
-    // Turn off IRED
-    digitalWrite(DUST_LED_PIN, HIGH);
-    delayMicroseconds(DUST_SLEEP_WAIT_US);
-
-    // Convert ADC to voltage (ESP32-C3 12-bit ADC: 0-4095, 3.3V reference)
-    float voltage = rawADC * (3.3f / 4095.0f);
-
-    // Convert voltage to dust density (Sharp linear equation)
-    // Dust Density (ug/m3) = (0.17 * V - 0.1) * 1000
-    float rawDensity = (0.17f * voltage - 0.1f) * 1000.0f;
-    if (rawDensity < 0.0f) rawDensity = 0.0f;
-
-    // Moving Average Filter
-    dustBuffer[dustBufferIndex] = rawDensity;
-    dustBufferIndex = (dustBufferIndex + 1) % MA_SIZE;
-    if (dustBufferIndex == 0) dustBufferFull = true;
-
-    int count = dustBufferFull ? MA_SIZE : dustBufferIndex;
-    float sum = 0.0f;
-    for (int i = 0; i < count; i++) {
-        sum += dustBuffer[i];
+    float sumVoltage = 0.0f;
+    int sampleCount = 5;
+    for (int i = 0; i < sampleCount; i++) {
+        digitalWrite(DUST_LED_PIN, LOW);
+        delayMicroseconds(DUST_PULSE_WAIT_US);
+        int rawValue = analogRead(DUST_ANALOG_PIN);
+        delayMicroseconds(DUST_SAMPLE_WAIT_US);
+        digitalWrite(DUST_LED_PIN, HIGH);
+        delayMicroseconds(DUST_SLEEP_WAIT_US);
+        sumVoltage += (rawValue * 3.3f / 4095.0f) * DUST_VOLTAGE_RATIO;
+        delay(5);
     }
-    return sum / count;
+    float avgVoltage = sumVoltage / sampleCount;
+    float dustDensity_mgm3 = (0.17f * avgVoltage - 0.1f);
+    if (dustDensity_mgm3 < 0.0f) dustDensity_mgm3 = 0.0f;
+
+    // Convert mg/m3 to ug/m3 for telemetry (1 mg/m3 = 1000 ug/m3)
+    return dustDensity_mgm3 * 1000.0f;
 }
 
 void readEnvironmentalSensors() {
@@ -268,16 +256,16 @@ void readPowerSensors() {
 void evaluateAlerts() {
     bool alarm = false;
 
-    // Evaluate PM2.5 threshold
-    if (currentData.pm25_ugm3 >= PM25_ALARM_UGM3) {
+    // Evaluate PM2.5 threshold (0.15 mg/m3 = 150 ug/m3)
+    if (currentData.pm25_ugm3 >= (PM25_WARN_MGM3 * 1000.0f)) {
         alarm = true;
     }
-    // Evaluate VOC gas resistance threshold
-    if (currentData.gas_resistance_kohm > 0 && currentData.gas_resistance_kohm <= VOC_ALARM_KOHM) {
+    // Evaluate Critical Low Battery (< 20%)
+    if (currentData.battery_pct > 0 && currentData.battery_pct < BATTERY_WARN_PCT) {
         alarm = true;
     }
-    // Evaluate Critical Low Battery
-    if (currentData.bus_voltage_v > 0 && currentData.bus_voltage_v <= BATTERY_WARN_VOLTS) {
+    // Evaluate High Temperature (> 35°C)
+    if (currentData.temperature > TEMP_WARN_C) {
         alarm = true;
     }
 

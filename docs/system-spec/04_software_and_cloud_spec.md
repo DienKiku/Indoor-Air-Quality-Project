@@ -28,42 +28,50 @@ stateDiagram-v2
 ## 2. Sensor Signal Processing Algorithms
 
 ### 2.1. Sharp GP2Y1010AU0F Microsecond Timing & Calibration
-The optical dust sensor requires precise microsecond-level timing to energize the infrared emitter diode (IRED) and sample the scattered light pulse:
+The optical dust sensor requires microsecond-accurate pulse modulation to energize the infrared emitter diode (IRED) and sample the scattered light:
 
-1. Drive `GPIO 1` LOW to activate the IRED.
-2. Wait precisely $280 \mu s$ ($0.28 ms$) for the light pulse to stabilize.
-3. Read the analog voltage on `GPIO 0` using the 12-bit ADC (sampling time $\approx 40 \mu s$).
-4. Drive `GPIO 1` HIGH to deactivate the IRED (total pulse duration: $320 \mu s$).
-5. Delay for $9680 \mu s$ before the next allowable pulse ($10 ms$ total cycle).
+1. Drive `GPIO 3` (DUST_LED_PIN) LOW to activate the internal IRED.
+2. Wait precisely $280 \mu s$ ($0.28 ms$) for the light pulse and optical reflection to stabilize.
+3. Sample the analog voltage on `GPIO 4` (DUST_VO_PIN) using the ESP32-C3 12-bit ADC (`ADC_11db` attenuation, sampling duration $\approx 40 \mu s$).
+4. Drive `GPIO 3` HIGH to deactivate the IRED (total pulse duration: $320 \mu s$).
+5. Wait for $9680 \mu s$ to complete the standard $10 ms$ operating cycle.
 
-#### Mathematical Conversion:
-$$\text{Measured Voltage } V_{ADC} = ADC\_Value \times \left(\frac{3.3V}{4095}\right)$$
+#### Mathematical Conversion & Hardware Scaling:
+The analog output $V_o$ from the GP2Y1010AU0F can reach up to $\approx 4.5V - 5.0V$. A hardware resistor voltage divider is placed at the analog pin to scale the signal to within the ESP32-C3 ADC range ($\le 3.3V$), introducing a scaling correction factor of $1.5$:
 
-Applying the Sharp linear transfer characteristic curve:
-$$\text{Dust Density } (\mu g/m^3) = \max\left(0.0, \; (0.17 \times V_{ADC} - 0.1) \times 1000\right)$$
+$$V_{raw} = \text{ADC\_Value} \times \left(\frac{3.3\text{V}}{4095}\right)$$
+$$V_{Vo} = V_{raw} \times 1.5$$
 
-A **10-sample Moving Average Filter (MAF)** is applied to eliminate sudden noise spikes caused by turbulence:
-$$\bar{D}_k = \frac{1}{N} \sum_{i=0}^{N-1} D_{k-i}, \quad N = 10$$
+Applying the calibrated Sharp linear transfer function:
+$$\text{Dust Density } (\text{mg/m}^3) = \max\left(0.0, \; 0.17 \times V_{Vo} - 0.1\right)$$
+
+To convert to standard $\mu g/m^3$:
+$$\text{Dust Density } (\mu\text{g/m}^3) = \text{Dust Density } (\text{mg/m}^3) \times 1000$$
+
+A **5-sample Moving Average Filter (MAF)** is applied to smooth instantaneous noise:
+$$\bar{D} = \frac{1}{5} \sum_{i=1}^{5} D_i$$
 
 ### 2.2. BME680 Gas Resistance & IAQ Estimation
 The BME680 incorporates a metal-oxide (MOX) gas sensor heated to 320°C for 150 ms before readout. Higher gas resistance ($R_{gas}$ in $k\Omega$) indicates cleaner air, while lower resistance corresponds to elevated volatile organic compounds (VOCs).
 
-- **Baseline Calibration:** The system records a 24-hour maximum resistance $R_{base}$ representing clean ambient air.
-- **Air Quality Ratio:**
-  $$\text{VOC Ratio} = \frac{R_{gas}}{R_{base}}$$
+- **Gas Resistance Formula:**
+  $$R_{gas} (\text{k}\Omega) = \frac{\text{raw\_resistance}}{1000.0}$$
 - **Categorization:**
   - $R_{gas} \ge 150 \, k\Omega$: Good (clean indoor air).
   - $50 \, k\Omega \le R_{gas} < 150 \, k\Omega$: Moderate.
   - $R_{gas} < 50 \, k\Omega$: Hazardous (Elevated VOC / cooking smoke / solvent vapors).
 
 ### 2.3. Battery State-of-Charge (SoC) Calculation
-The INA219 measures the 2S battery pack bus voltage ($V_{bus}$). The remaining capacity percentage is derived using a piece-wise linear approximation of the Li-ion discharge curve:
+The INA219 measures the 2S battery pack bus voltage ($V_{bus}$). The remaining capacity percentage is calculated using a linear interpolation across the 2S operational range ($6.0\text{V}$ cutoff to $8.4\text{V}$ fully charged):
 
-$$\text{SoC } (\%) = \begin{cases} 
-100\% & \text{if } V_{bus} \ge 8.4V \\
-\frac{V_{bus} - 6.0V}{8.4V - 6.0V} \times 100\% & \text{if } 6.0V < V_{bus} < 8.4V \\
-0\% & \text{if } V_{bus} \le 6.0V 
-\end{cases}$$
+$$\text{Battery SoC (\%)} = \min\left(100, \; \max\left(0, \; \frac{V_{bus} - 6.0\text{V}}{8.4\text{V} - 6.0\text{V}} \times 100\right)\right)$$
+
+In the firmware implementation:
+```cpp
+float batteryPct = (busvoltage - 6.0) / (8.4 - 6.0) * 100.0;
+if (batteryPct > 100) batteryPct = 100;
+if (batteryPct < 0) batteryPct = 0;
+```
 
 ---
 
@@ -137,9 +145,9 @@ Granular rules enforce that the ESP32-C3 can only write to its designated statio
 
 ## 4. Alert & Threshold Logic
 
-| Parameter | Warning Threshold | Critical Alarm Threshold | Action Taken |
+| Parameter | Operational Threshold | Hardware Trigger | UI & System Action |
 | :--- | :--- | :--- | :--- |
-| **PM2.5 Dust** | $> 35.0 \, \mu g/m^3$ | $> 75.0 \, \mu g/m^3$ | TFT banner turns RED; Buzzer sounds intermittent alarm |
-| **BME680 VOC** | $< 80.0 \, k\Omega$ | $< 40.0 \, k\Omega$ | Warning banner displayed; Cloud alert dispatched |
-| **Battery Voltage** | $< 6.6V$ (25%) | $< 6.2V$ (8%) | Low battery symbol; Short periodic chirp on buzzer |
-| **Temperature** | $> 35.0^\circ C$ or $< 15.0^\circ C$ | $> 45.0^\circ C$ | Environmental warning displayed on screen |
+| **PM2.5 Dust** | $> 0.15 \, \text{mg/m}^3$ ($150 \, \mu\text{g/m}^3$) | `dustDensity > 0.15` | TFT text turns RED (`COLOR_WARN`); Buzzer sounds alert beep ($200\text{ms}$) |
+| **Battery SoC** | $< 20.0\%$ ($V_{bus} < 6.48\text{V}$) | `batteryPct < 20.0` | Battery icon turns RED; Buzzer sounds low-power warning |
+| **Temperature** | $> 35.0^\circ\text{C}$ | `temp > 35.0` | Temperature reading turns RED (`COLOR_WARN`) |
+| **BME680 VOC** | $< 50.0 \, \text{k}\Omega$ | Low gas resistance | Environmental quality status degrades on TFT |

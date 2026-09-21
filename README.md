@@ -72,7 +72,7 @@ flowchart TD
 
 The circuit schematic has been designed in KiCad and verified on physical prototype board:
 
-![Hardware Circuit Schematic](hardware/schematics/circuit_schematic.svg)
+![Hardware Circuit Schematic](hardware/schematics/circuit_schematic.png)
 
 > **KiCad Design Source Files:** Available in [`hardware/schematics/`](hardware/schematics/) (`1.kicad_sch`, `1.kicad_pro`, `New_Library_1.kicad_sym`).
 
@@ -84,10 +84,10 @@ This repository is organized into distinct functional directories:
 
 ```text
 ├── hardware/
-│   └── schematics/                # KiCad CAD schematic & visual SVG diagram
+│   └── schematics/                # KiCad CAD schematic & visual diagram
 │       ├── 1.kicad_sch            # KiCad schematic source file
 │       ├── 1.kicad_pro            # KiCad project file
-│       └── circuit_schematic.svg  # Rendered SVG visual diagram
+│       └── circuit_schematic.png  # Rendered KiCad schematic image
 ├── docs/
 │   ├── system-spec/               # Technical system specifications
 │   │   ├── 01_system_architecture.md

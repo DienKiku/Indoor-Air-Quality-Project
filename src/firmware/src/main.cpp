@@ -16,10 +16,10 @@
 #if __has_include("firebase_config.h")
     #include "firebase_config.h"
 #else
-    #define WIFI_SSID       "WIFI_SSID_PLACEHOLDER"
-    #define WIFI_PASSWORD   "WIFI_PASS_PLACEHOLDER"
-    #define FIREBASE_HOST   "https://project-id-default-rtdb.firebaseio.com/"
-    #define FIREBASE_AUTH   "FIREBASE_SECRET_PLACEHOLDER"
+    #define WIFI_SSID       "Aeduongso8"
+    #define WIFI_PASSWORD   "20022003"
+    #define FIREBASE_HOST   "https://iaq-project-57a4f-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    #define FIREBASE_AUTH   "CIX0VQNsdwG4iaeeTnJqAW9VH1q79wumwuPuUZ49"
     #define DEVICE_ID       "ESP32C3_STATION_01"
 #endif
 

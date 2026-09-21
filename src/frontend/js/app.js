@@ -2,13 +2,14 @@
 // FIREBASE CONFIGURATION (REPLACE WITH YOUR KEYS)
 // ==========================================
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDJqoccJHQnIxVQY7A_UR7CB7LKDzqMy_8",
+    authDomain: "iaq-project-57a4f.firebaseapp.com",
+    databaseURL: "https://iaq-project-57a4f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "iaq-project-57a4f",
+    storageBucket: "iaq-project-57a4f.firebasestorage.app",
+    messagingSenderId: "560237387006",
+    appId: "1:560237387006:web:06b146658326ffc39819af",
+    measurementId: "G-8MC3QB1K5B"
 };
 
 // Initialize Firebase (if valid config)

@@ -31,7 +31,7 @@
 ### Week 3: BOM Procurement & Schematic Capture
 - [x] Procure all physical Bill of Materials (BOM) components.
 - [x] Draw full circuit schematic in KiCad connecting ESP32-C3 with power management and all sensors (`hardware/schematics/1.kicad_sch`).
-- [x] Export visual SVG circuit diagram (`hardware/schematics/circuit_schematic.svg`).
+- [x] Export visual circuit schematic diagram (`hardware/schematics/circuit_schematic.png`).
 - [x] Check footprint dimensions for PCB prototyping.
 
 ### Week 4: Component Preparation & Code Setup

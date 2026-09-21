@@ -12,7 +12,6 @@
 *.sln.docstates
 
 # Secrets & Environment Configurations
-firebase_config.h
 *.env
 *.env.local
 *.key

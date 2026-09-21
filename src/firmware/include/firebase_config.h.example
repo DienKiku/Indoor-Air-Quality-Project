@@ -10,8 +10,8 @@
 // ==========================================
 // GOOGLE FIREBASE CREDENTIALS
 // ==========================================
-// Example: "https://your-project-id-default-rtdb.firebaseio.com/"
-#define FIREBASE_HOST       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com/"
+// Example: "https://iaq-project-57a4f-default-rtdb.asia-southeast1.firebasedatabase.app/"
+#define FIREBASE_HOST       "https://YOUR_PROJECT_ID-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
 // Firebase Web API Key (found in Project Settings -> General)
 #define FIREBASE_AUTH       "YOUR_FIREBASE_DATABASE_SECRET_OR_API_KEY"

@@ -62,16 +62,16 @@ To allow the ESP32-C3 to write to the Realtime Database using the legacy token /
 4. Click **"Show"** next to your secret key, then copy the alphanumeric string.
 
 ### 3.1. Configure Firmware
-Create a file named `firebase_config.h` inside `src/firmware/include/`:
+The firmware configuration is stored in [`src/firmware/include/firebase_config.h`](../../src/firmware/include/firebase_config.h):
 ```cpp
 #ifndef FIREBASE_CONFIG_H
 #define FIREBASE_CONFIG_H
 
-#define WIFI_SSID           "Your_WiFi_SSID"
-#define WIFI_PASSWORD       "Your_WiFi_Password"
+#define WIFI_SSID           "Aeduongso8"
+#define WIFI_PASSWORD       "20022003"
 
-#define FIREBASE_HOST       "https://your-project-id-default-rtdb.firebaseio.com/"
-#define FIREBASE_AUTH       "your_database_secret_here"
+#define FIREBASE_HOST       "https://iaq-project-57a4f-default-rtdb.asia-southeast1.firebasedatabase.app/"
+#define FIREBASE_AUTH       "CIX0VQNsdwG4iaeeTnJqAW9VH1q79wumwuPuUZ49"
 #define DEVICE_ID           "ESP32C3_STATION_01"
 
 #endif
@@ -85,19 +85,20 @@ Create a file named `firebase_config.h` inside `src/firmware/include/`:
 2. Click the **Web icon** (`</>`) to register a web application.
 3. App nickname: `IAQ-Web-Dashboard`.
 4. Click **"Register app"**.
-5. Firebase will present your `firebaseConfig` snippet:
+5. Firebase provides the `firebaseConfig` snippet integrated into [`src/frontend/js/app.js`](../../src/frontend/js/app.js):
 
 ```javascript
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
-  authDomain: "indoor-air-quality.firebaseapp.com",
-  databaseURL: "https://indoor-air-quality-default-rtdb.firebaseio.com",
-  projectId: "indoor-air-quality",
-  storageBucket: "indoor-air-quality.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef"
+  apiKey: "AIzaSyDJqoccJHQnIxVQY7A_UR7CB7LKDzqMy_8",
+  authDomain: "iaq-project-57a4f.firebaseapp.com",
+  databaseURL: "https://iaq-project-57a4f-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "iaq-project-57a4f",
+  storageBucket: "iaq-project-57a4f.firebasestorage.app",
+  messagingSenderId: "560237387006",
+  appId: "1:560237387006:web:06b146658326ffc39819af",
+  measurementId: "G-8MC3QB1K5B"
 };
 ```
 
 ### 4.1. Configure Web Dashboard
-Open [`src/frontend/js/app.js`](../../src/frontend/js/app.js) and replace the placeholder `firebaseConfig` object with your generated keys.
+Open [`src/frontend/js/app.js`](../../src/frontend/js/app.js) where the live configuration connects directly to the Singapore RTDB instance.

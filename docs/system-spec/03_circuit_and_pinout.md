@@ -4,7 +4,7 @@
 
 Below is the complete hardware schematic diagram generated from the verified KiCad engineering schematic (`hardware/schematics/1.kicad_sch`):
 
-![Hardware Circuit Schematic](../../hardware/schematics/circuit_schematic.svg)
+![Hardware Circuit Schematic](../../hardware/schematics/circuit_schematic.png)
 
 ---
 

@@ -32,7 +32,7 @@ Week 03 achieved significant engineering milestones across hardware prototyping,
   - 1.8-inch ST7735 TFT LCD (SPI: CS on GPIO21, DC on GPIO20, RST on GPIO10, MOSI on GPIO9, SCLK on GPIO8, BL on GPIO5).
   - Acoustic Buzzer circuit driven by a 2SC1815 NPN transistor via GPIO2.
 - Authored the complete electronic schematic in KiCad (`hardware/schematics/1.kicad_sch`, `1.kicad_pro`, `New_Library_1.kicad_sym`).
-- Rendered high-resolution SVG visual diagram (`hardware/schematics/circuit_schematic.svg`) for repository inspection.
+- Rendered high-resolution visual circuit diagram (`hardware/schematics/circuit_schematic.png`) for repository inspection.
 
 ### 3.2. Offline Test Firmware & Graphical UI
 - Developed and verified `src/test/offline_display_test.ino` on physical hardware:

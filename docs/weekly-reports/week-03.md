@@ -7,12 +7,12 @@
 ---
 
 ## 1. Executive Summary
-Week 03 achieved significant engineering milestones across hardware prototyping, electronic schematic capture, and offline firmware verification. A physical prototype test board ("board trắng") was assembled and wired. The complete system schematic was designed in KiCad (`1.kicad_sch`) with custom footprint and symbol definitions. Offline firmware was developed and successfully executed on the hardware (`src/firmware/firmware.ino`), driving the 1.8-inch ST7735 TFT LCD with a custom 4-panel dashboard layout, active buzzer acoustics, and real-time telemetry from the Bosch BME680, Sharp GP2Y1010AU0F, and INA219 energy monitor.
+Week 03 achieved significant engineering milestones across hardware prototyping, electronic schematic capture, and offline firmware verification. A physical prototype circuit board was assembled and wired. The complete system schematic was designed in KiCad (`1.kicad_sch`) with custom footprint and symbol definitions. Offline firmware was developed and successfully executed on the hardware (`src/firmware/firmware.ino`), driving the 1.8-inch ST7735 TFT LCD with a custom 4-panel dashboard layout, active buzzer acoustics, and real-time telemetry from the Bosch BME680, Sharp GP2Y1010AU0F, and INA219 energy monitor.
 
 ---
 
 ## 2. Objectives for the Week
-- [x] **Objective 1:** Assemble and wire the physical prototype test board ("board trắng").
+- [x] **Objective 1:** Assemble and wire the physical prototype circuit board.
 - [x] **Objective 2:** Design and finalize the complete hardware schematic using KiCad.
 - [x] **Objective 3:** Implement and validate standalone offline test firmware on the ESP32-C3.
 - [x] **Objective 4:** Verify sensor data acquisition and graphical UI rendering on the 1.8" ST7735 TFT display.

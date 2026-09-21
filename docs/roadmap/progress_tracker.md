@@ -2,75 +2,80 @@
 
 ## 1. Overall Progress Summary
 
-| Period | Description | Status | Completion Rate |
+| Week / Milestone | Core Engineering Objectives | Status | Progress |
 | :--- | :--- | :---: | :---: |
-| **Weeks 1 – 2** | Inception & System Specification | **Completed** | 100% |
-| **Weeks 3 – 4** | BOM Procurement & Component Preparation | **Completed** | 100% |
-| **Week 5** | Raw PCB Fabrication (Board Trắng) | **Completed** | 100% |
-| **Week 6** | PCB Assembly, Test Firmware & Web UI | **Completed** | 100% |
-| **Weeks 7 – 8** | Embedded Firmware, Firebase & Acoustic Alerting | **In Progress** | 20% |
-| **Week 9** | Enclosure, Verification & Final Reporting | **Pending** | 0% |
+| **Week 1** | Inception, IAQ Standards & Chapter 1 Report | **Completed** | 100% |
+| **Week 2** | System Architecture, Tech Specs & Chapter 2 Report | **Completed** | 100% |
+| **Week 3** *(Current)* | Hardware Prototype, KiCad Schematic & Display Firmware | **Completed** | 100% |
+| **Week 4** | WiFi & Google Firebase Realtime Telemetry Sync | **Next Up** | 0% |
+| **Week 5** | Multi-level Acoustic Alerting & Power Profiling | **Pending** | 0% |
+| **Week 6** | 24-Hour Continuous Stability & Multi-sensor Calibration | **Pending** | 0% |
+| **Week 7** | Custom Enclosure 3D CAD & Mechanical Packaging | **Pending** | 0% |
+| **Week 8** | Indoor Field Testing & Battery Autonomy Evaluation | **Pending** | 0% |
+| **Week 9** | Academic Project Reports (Chapters 3, 4, 5) | **Pending** | 0% |
+| **Week 10** | Final Code Audit, Demonstration & Defense Preparation | **Pending** | 0% |
 
 ---
 
 ## 2. Detailed Task Checklist
 
-### Week 1: Inception & Component Selection
-- [x] Define project scope, indoor air quality target parameters, and motivation.
-- [x] Research WHO and US-EPA IAQ standards and particulate exposure thresholds.
+### Week 1: Project Inception & Requirements Analysis
+- [x] Define project scope, target indoor air quality parameters, and problem statement.
+- [x] Research WHO and US-EPA IAQ standards (PM2.5 limits, VOC exposure, thermal comfort).
+- [x] Select core hardware components (ESP32-C3 Super Mini, BME680, GP2Y1010AU0F, INA219, ST7735).
 - [x] Author and finalize **Chapter 1: Introduction**.
-- [x] Select core components (ESP32-C3 Super Mini, BME680, GP2Y1010AU0F, INA219, ST7735).
 
-### Week 2: System Design & Architecture
+### Week 2: System Architecture & Technical Specifications
+- [x] Formulate 3-Tier IoT System Architecture (Sensor Node $\rightarrow$ Google Firebase $\rightarrow$ Web Dashboard).
 - [x] Design 2S Li-ion battery power subsystem (18650 cells, 2S 5A BMS, Type-C boost charger, AMS1117-5.0V).
-- [x] Formulate 3-Tier System Architecture and data flow diagrams.
 - [x] Author and finalize **Chapter 2: Theoretical Background & System Design**.
 - [x] Compile Technical System Specifications (`docs/system-spec/01` to `05`).
 - [x] Establish GitHub repository structure and version control workflow.
 
-### Week 3: BOM Procurement & Schematic Capture
+### Week 3: Hardware Prototyping, Schematic Capture & Local Firmware (Current)
 - [x] Procure all physical Bill of Materials (BOM) components.
-- [x] Draw full circuit schematic in KiCad connecting ESP32-C3 with power management and all sensors (`hardware/schematics/1.kicad_sch`).
-- [x] Export visual circuit schematic diagram (`hardware/schematics/circuit_schematic.png`).
-- [x] Check footprint dimensions for PCB prototyping.
+- [x] Author full electronic circuit schematic in KiCad (`hardware/schematics/1.kicad_sch`, `circuit_schematic.png`).
+- [x] Assemble and wire physical prototype circuit board with sensors, display, and power distribution rails.
+- [x] Implement and flash verified primary firmware (`src/firmware/firmware.ino`):
+  - [x] ST7735 1.8" TFT 4-panel graphical layout (`TEMP`, `HUMI`, `PM2.5`, `GAS`).
+  - [x] 2S Battery SoC gauge with voltage, discharge current, and color-coded icon.
+  - [x] Optical dust sensor microsecond pulse driver with hardware $1.5\times$ divider scaling.
+  - [x] Acoustic double-chirp startup notification and buzzer threshold alarm.
+- [x] Construct Web Dashboard layout (`src/frontend/index.html`, `app.js`) and configure Firebase parameters (`src/firmware/firebase_config.h`).
 
-### Week 4: Component Preparation & Code Setup
-- [x] Burn-in BME680 MOX gas sensor hotplate for baseline resistance calculation.
-- [x] Construct external RC driving circuit for Sharp GP2Y1010AU0F ($150\Omega$ / $240\Omega$ resistor and $220\mu F$ capacitor).
-- [x] Set up PlatformIO project with ESP32-C3 Arduino framework to prepare for hardware tests.
+### Week 4: Wi-Fi Connectivity & Firebase Realtime Cloud Sync
+- [ ] Connect ESP32-C3 to local Wi-Fi access point using credentials in `firebase_config.h`.
+- [ ] Implement periodic JSON telemetry push from `firmware.ino` to Firebase RTDB node `/iaq_stations/ESP32C3_STATION_01/current`.
+- [ ] Validate live WebSocket streaming from Firebase to the Web Dashboard with dynamic Chart.js rendering.
+- [ ] Implement automatic Wi-Fi reconnection handling for resilient edge operation.
 
-### Week 5: Raw PCB Fabrication (Board Trắng)
-- [x] Complete prototype board layout design based on verified schematic.
-- [x] Fabricate prototype PCB (board trắng), drill mounting holes, and inspect copper traces.
-- [x] Perform continuity/short-circuit checks on power rails ($V_{CC}$, $GND$, $3.3V$, $5.0V$) before assembly.
+### Week 5: Acoustic Alarm Thresholding & Power Profiling
+- [ ] Calibrate dynamic acoustic alarm patterns (Warning vs. Critical alarm for PM2.5 and low battery).
+- [ ] Measure active current draw vs. idle current draw across operating modes using INA219.
+- [ ] Benchmark battery operating life under varying Wi-Fi transmission intervals (5s, 15s, 60s).
 
-### Week 6: PCB Assembly, Test Firmware & Web UI
-- [x] Solder power subsystem (2S BMS, AMS1117), ESP32-C3, and passive components onto the board.
-- [x] Mount external sensors and display (BME680, INA219, GP2Y1010AU0F, ST7735) onto the board.
-- [x] Flash hardware bring-up firmware (`src/firmware/firmware.ino`) to validate populated connections.
-- [x] Verify on-device 4-panel graphical UI, buzzer acoustics, and real-time battery monitoring on ST7735.
-- [x] Develop responsive web interface using HTML5, CSS3, and JavaScript (`src/frontend/index.html`).
-- [x] Implement interactive time-series telemetry charts using Chart.js (`src/frontend/js/app.js`).
+### Week 6: 24-Hour Continuous Testing & Multi-Sensor Calibration
+- [ ] Conduct continuous 24-hour stability bench run without memory leaks or Wi-Fi drops.
+- [ ] Calibrate Sharp GP2Y1010AU0F zero-dust baseline voltage in a sealed clean chamber.
+- [ ] Evaluate Bosch BME680 gas resistance baseline stabilization and thermal compensation.
+- [ ] Audit Firebase security rules and real-time database transmission efficiency.
 
-### Week 7: Embedded Firmware & Local Display
-- [x] Implement non-blocking task scheduler for sensor acquisition, UI refresh, and cloud sync.
-- [x] Implement microsecond pulse driver for GP2Y1010AU0F with hardware 1.5x scaling and 5-sample smoothing.
-- [x] Integrate INA219 driver to read bus voltage, shunt current, and calculate remaining battery %.
-- [x] Initialize hardware SPI on ST7735 1.8" TFT display and implement graphical dashboard layout.
+### Week 7: Protective Enclosure Design & Mechanical Assembly
+- [ ] 3D CAD design of compact station enclosure with isolated sensor airflow channels.
+- [ ] 3D print enclosure body and faceplate for 1.8" ST7735 TFT and external Type-C port.
+- [ ] Assemble sensor board, 2S 18650 battery pack, and BMS inside enclosure with secure standoffs.
 
-### Week 8: Firebase Integration & Acoustic Alerting
-- [x] Define Google Firebase Realtime Database schema and client credentials.
-- [ ] Configure Google Firebase project, Realtime Database (RTDB), and security access rules.
-- [ ] Establish secure Wi-Fi connectivity and synchronize live telemetry to Firebase every 5 seconds.
-- [ ] Integrate Firebase Web SDK (v9/v10) for real-time WebSocket data updates.
-- [ ] Assemble NPN transistor driver circuit for the TMB09A05 5V active buzzer.
-- [ ] Implement audible alarm logic for hazardous PM2.5, elevated VOCs, and low battery voltage.
+### Week 8: Environmental Field Testing & Long-Term Evaluation
+- [ ] Deploy assembled IoT station in distinct indoor environments (office, kitchen, laboratory).
+- [ ] Log real-time air quality events (cooking fumes, dust disturbance, ventilation changes).
+- [ ] Record empirical battery discharge curve and compare against theoretical 2S model.
 
-### Week 9: Verification, Packaging & Final Documentation
-- [ ] Perform continuous 24-hour stability and cloud synchronization reliability test.
-- [ ] Measure actual power draw across different operating states and validate battery autonomy.
-- [ ] Design and 3D print protective enclosure with dedicated air intake and ventilation channels.
-- [ ] Complete **Chapter 3: Detailed Hardware & Software Design**.
-- [ ] Complete **Chapter 4: Implementation & Experimental Evaluation**.
-- [ ] Complete **Chapter 5: Conclusion & Future Work**.
-- [ ] Final code audit, documentation review, and presentation slide preparation.
+### Week 9: Engineering Documentation & Report Writing
+- [ ] Author **Chapter 3: Detailed Hardware & Software Design**.
+- [ ] Author **Chapter 4: Implementation, Testing & Experimental Evaluation**.
+- [ ] Author **Chapter 5: Conclusion & Future Work**.
+
+### Week 10: Final System Audit & Project Defense
+- [ ] Comprehensive codebase audit, repository polishing, and release tagging (`v1.0.0`).
+- [ ] Record end-to-end video demonstration showcasing sensor detection, cloud streaming, and web graphs.
+- [ ] Prepare technical defense presentation slides and final submission deliverables.

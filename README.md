@@ -100,7 +100,6 @@ This repository is organized into distinct functional directories:
 │   │   ├── task_assignment_raci.md
 │   │   └── progress_tracker.md
 │   ├── weekly-reports/            # Weekly progress tracking
-│   │   ├── weekly_report_template.md
 │   │   ├── week-01.md
 │   │   ├── week-02.md
 │   │   └── week-03.md
@@ -111,45 +110,20 @@ This repository is organized into distinct functional directories:
 │       ├── chapter_4_implementation_testing.md
 │       └── chapter_5_conclusion_future_work.md
 └── src/
-    ├── firmware/                  # ESP32-C3 C/C++ firmware (PlatformIO)
-    ├── test/                      # Standalone test firmware (offline_display_test.ino)
-    ├── cloud-firebase/            # Firebase RTDB rules and sample payloads
-    └── frontend/                  # Web Dashboard application (HTML5/CSS3/JS)
+    ├── firmware/                  # ESP32-C3 Arduino firmware (firmware.ino, firebase_config.h)
+    ├── cloud-firebase/            # Firebase RTDB rules and sample telemetry schemas
+    └── frontend/                  # Web Dashboard application (HTML5/CSS3/JS, Chart.js)
 ```
 
 ---
 
-## 4. Getting Started
+## 5. Software & Cloud Subsystems
 
-### 4.1. Prerequisites
-- [Visual Studio Code](https://code.visualstudio.com/) with [PlatformIO IDE](https://platformio.org/platformio-ide) extension.
-- A Google Firebase project with **Realtime Database** enabled.
-- Git CLI.
-
-### 4.2. Firmware Setup
-1. Navigate to the firmware directory:
-   ```bash
-   cd src/firmware
-   ```
-2. Copy the example configuration:
-   ```bash
-   cp include/firebase_config.h.example include/firebase_config.h
-   ```
-3. Update `include/firebase_config.h` with your Wi-Fi credentials, Firebase Database URL, and API key.
-4. Build and flash the firmware:
-   ```bash
-   pio run --target upload
-   ```
-
-### 4.3. Frontend Dashboard
-1. Navigate to `src/frontend/`.
-2. Update Firebase configuration keys in `js/app.js`.
-3. Open `index.html` in any modern web browser, or deploy via Firebase Hosting:
-   ```bash
-   firebase deploy --only hosting
-   ```
+- **ESP32-C3 Firmware ([`src/firmware/`](src/firmware/)):** The core firmware sketch ([`firmware.ino`](src/firmware/firmware.ino)) coordinates sensor acquisitions, ST7735 TFT graphical rendering (4-panel UI), 2S battery gauge monitoring, acoustic alarm triggering, and configured credentials ([`firebase_config.h`](src/firmware/firebase_config.h)). Can be edited and flashed using Arduino IDE or PlatformIO.
+- **Cloud Backend ([`src/cloud-firebase/`](src/cloud-firebase/)):** Google Firebase Realtime Database schema and security rules for real-time station telemetry streaming.
+- **User Web Dashboard ([`src/frontend/`](src/frontend/)):** Real-time monitoring dashboard ([`index.html`](src/frontend/index.html)) with live Chart.js trend visualization directly synced via Firebase WebSocket.
 
 ---
 
-## 5. License
+## 6. License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

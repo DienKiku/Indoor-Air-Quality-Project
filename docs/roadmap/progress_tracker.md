@@ -47,7 +47,7 @@
 ### Week 6: PCB Assembly, Test Firmware & Web UI
 - [x] Solder power subsystem (2S BMS, AMS1117), ESP32-C3, and passive components onto the board.
 - [x] Mount external sensors and display (BME680, INA219, GP2Y1010AU0F, ST7735) onto the board.
-- [x] Flash hardware bring-up firmware (`src/test/offline_display_test.ino`) to validate populated connections.
+- [x] Flash hardware bring-up firmware (`src/firmware/firmware.ino`) to validate populated connections.
 - [x] Verify on-device 4-panel graphical UI, buzzer acoustics, and real-time battery monitoring on ST7735.
 - [x] Develop responsive web interface using HTML5, CSS3, and JavaScript (`src/frontend/index.html`).
 - [x] Implement interactive time-series telemetry charts using Chart.js (`src/frontend/js/app.js`).
@@ -59,7 +59,7 @@
 - [x] Initialize hardware SPI on ST7735 1.8" TFT display and implement graphical dashboard layout.
 
 ### Week 8: Firebase Integration & Acoustic Alerting
-- [x] Author Google Firebase Setup Guide (`docs/system-spec/06_firebase_setup_guide.md`).
+- [x] Define Google Firebase Realtime Database schema and client credentials.
 - [ ] Configure Google Firebase project, Realtime Database (RTDB), and security access rules.
 - [ ] Establish secure Wi-Fi connectivity and synchronize live telemetry to Firebase every 5 seconds.
 - [ ] Integrate Firebase Web SDK (v9/v10) for real-time WebSocket data updates.

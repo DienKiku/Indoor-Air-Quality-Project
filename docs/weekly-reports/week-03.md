@@ -7,7 +7,7 @@
 ---
 
 ## 1. Executive Summary
-Week 03 achieved significant engineering milestones across hardware prototyping, electronic schematic capture, and offline firmware verification. A physical prototype test board ("board trắng") was assembled and wired. The complete system schematic was designed in KiCad (`1.kicad_sch`) with custom footprint and symbol definitions. Offline firmware was developed and successfully executed on the hardware (`src/test/offline_display_test.ino`), driving the 1.8-inch ST7735 TFT LCD with a custom 4-panel dashboard layout, active buzzer acoustics, and real-time telemetry from the Bosch BME680, Sharp GP2Y1010AU0F, and INA219 energy monitor.
+Week 03 achieved significant engineering milestones across hardware prototyping, electronic schematic capture, and offline firmware verification. A physical prototype test board ("board trắng") was assembled and wired. The complete system schematic was designed in KiCad (`1.kicad_sch`) with custom footprint and symbol definitions. Offline firmware was developed and successfully executed on the hardware (`src/firmware/firmware.ino`), driving the 1.8-inch ST7735 TFT LCD with a custom 4-panel dashboard layout, active buzzer acoustics, and real-time telemetry from the Bosch BME680, Sharp GP2Y1010AU0F, and INA219 energy monitor.
 
 ---
 
@@ -35,7 +35,7 @@ Week 03 achieved significant engineering milestones across hardware prototyping,
 - Rendered high-resolution visual circuit diagram (`hardware/schematics/circuit_schematic.png`) for repository inspection.
 
 ### 3.2. Offline Test Firmware & Graphical UI
-- Developed and verified `src/test/offline_display_test.ino` on physical hardware:
+- Developed and verified `src/firmware/firmware.ino` on physical hardware:
   - Startup splash screen with system initialization check.
   - Acoustic double-chirp notification on boot (`BUZZER_PIN`).
   - 4-panel graphical layout on 128x160 TFT:
@@ -76,5 +76,5 @@ Week 03 achieved significant engineering milestones across hardware prototyping,
 ## 6. Objectives for Next Week (Week 04)
 - [ ] **Objective 1:** Connect ESP32-C3 to local Wi-Fi and establish real-time link with Google Firebase Realtime Database.
 - [ ] **Objective 2:** Configure Firebase project credentials (`FIREBASE_HOST`, `FIREBASE_AUTH`) and verify cloud JSON payload delivery.
-- [ ] **Objective 3:** Merge offline display logic with Firebase synchronization tasks into the main PlatformIO firmware (`src/firmware/src/main.cpp`).
+- [ ] **Objective 3:** Integrate Firebase cloud data synchronization into the primary firmware sketch (`src/firmware/firmware.ino`).
 - [ ] **Objective 4:** Test initial Web Dashboard connection to Firebase Realtime Database stream.

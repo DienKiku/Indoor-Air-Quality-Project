@@ -6,14 +6,12 @@
 | :--- | :--- | :---: | :---: |
 | **Week 1** | Inception, IAQ Standards & Chapter 1 Report | **Completed** | 100% |
 | **Week 2** | System Architecture, Tech Specs & Chapter 2 Report | **Completed** | 100% |
-| **Week 3** *(Current)* | Hardware Prototype, KiCad Schematic & Display Firmware | **Completed** | 100% |
-| **Week 4** | WiFi & Google Firebase Realtime Telemetry Sync | **Next Up** | 0% |
-| **Week 5** | Multi-level Acoustic Alerting & Power Profiling | **Pending** | 0% |
-| **Week 6** | 24-Hour Continuous Stability & Multi-sensor Calibration | **Pending** | 0% |
-| **Week 7** | Custom Enclosure 3D CAD & Mechanical Packaging | **Pending** | 0% |
-| **Week 8** | Indoor Field Testing & Battery Autonomy Evaluation | **Pending** | 0% |
-| **Week 9** | Academic Project Reports (Chapters 3, 4, 5) | **Pending** | 0% |
-| **Week 10** | Final Code Audit, Demonstration & Defense Preparation | **Pending** | 0% |
+| **Weeks 3 – 4** | Component Sourcing & Breadboard Peripheral Testing | **Completed** | 100% |
+| **Week 5** | Full Breadboard Integration & Web Dashboard Layout | **Completed** | 100% |
+| **Week 6** *(Current)* | KiCad Schematic Capture & PCB Fabrication Prep | **In Progress** | 80% |
+| **Week 7** | PCB Assembly, Hardware Bring-Up & Cloud Setup | **Pending** | 0% |
+| **Week 8** | Firebase Realtime Sync, Acoustic Alerting & 3D Box | **Pending** | 0% |
+| **Week 9** | 24h Stability, Final Documentation & Project Defense | **Pending** | 0% |
 
 ---
 
@@ -26,56 +24,49 @@
 - [x] Author and finalize **Chapter 1: Introduction**.
 
 ### Week 2: System Architecture & Technical Specifications
-- [x] Formulate 3-Tier IoT System Architecture (Sensor Node $\rightarrow$ Google Firebase $\rightarrow$ Web Dashboard).
+- [x] Formulate 3-Tier IoT System Architecture (Sensor Node -> Google Firebase -> Web Dashboard).
 - [x] Design 2S Li-ion battery power subsystem (18650 cells, 2S 5A BMS, Type-C boost charger, AMS1117-5.0V).
 - [x] Author and finalize **Chapter 2: Theoretical Background & System Design**.
 - [x] Compile Technical System Specifications (`docs/system-spec/01` to `05`).
 - [x] Establish GitHub repository structure and version control workflow.
 
-### Week 3: Hardware Prototyping, Schematic Capture & Local Firmware (Current)
+### Weeks 3 – 4: Hardware Procurement & Breadboard Subsystem Testing
 - [x] Procure all physical Bill of Materials (BOM) components.
+- [x] Verify ESP32-C3 Super Mini GPIO breakout pinout and power rails on breadboard.
+- [x] Assemble and validate Sharp GP2Y1010AU0F RC pulse driver circuit (150 ohm resistor, 220 uF capacitor) on breadboard.
+- [x] Wire I2C bus with BME680 and INA219 using pull-up resistors and verify basic address communication.
+- [x] Test 2S 18650 battery holder, BMS protection board, and AMS1117-5.0V output voltage stability.
+
+### Week 5: Full Breadboard Integration & Web App Frontend
+- [x] Interconnect all modules on breadboard (ESP32-C3, sensors, 1.8" ST7735 TFT, power rails).
+- [x] Flash initial firmware to test local screen rendering and sensor data acquisition.
+- [x] Develop responsive Web Dashboard layout (`src/frontend/index.html`, `app.js`, CSS) using Chart.js for data visualization.
+- [x] Define Firebase Realtime Database payload schema and draft configuration file (`firebase_config.h`).
+
+### Week 6: KiCad Schematic Capture & PCB Preparation (Current Week)
 - [x] Author full electronic circuit schematic in KiCad (`hardware/schematics/1.kicad_sch`, `circuit_schematic.png`).
-- [x] Assemble and wire physical prototype circuit board with sensors, display, and power distribution rails.
-- [x] Implement and flash verified primary firmware (`src/firmware/firmware.ino`):
-  - [x] ST7735 1.8" TFT 4-panel graphical layout (`TEMP`, `HUMI`, `PM2.5`, `GAS`).
-  - [x] 2S Battery SoC gauge with voltage, discharge current, and color-coded icon.
-  - [x] Optical dust sensor microsecond pulse driver with hardware $1.5\times$ divider scaling.
-  - [x] Acoustic double-chirp startup notification and buzzer threshold alarm.
-- [x] Construct Web Dashboard layout (`src/frontend/index.html`, `app.js`) and configure Firebase parameters (`src/firmware/firebase_config.h`).
+- [x] Assign footprints and verify design rules (ERC) based on the breadboard prototype.
+- [x] Lay out PCB traces and prepare Gerber/manufacturing files.
+- [ ] Etch/order raw PCB (board trắng) and inspect traces for continuity and short-circuits.
 
-### Week 4: Wi-Fi Connectivity & Firebase Realtime Cloud Sync
-- [ ] Connect ESP32-C3 to local Wi-Fi access point using credentials in `firebase_config.h`.
-- [ ] Implement periodic JSON telemetry push from `firmware.ino` to Firebase RTDB node `/iaq_stations/ESP32C3_STATION_01/current`.
-- [ ] Validate live WebSocket streaming from Firebase to the Web Dashboard with dynamic Chart.js rendering.
-- [ ] Implement automatic Wi-Fi reconnection handling for resilient edge operation.
+### Week 7: PCB Soldering, Hardware Bring-Up & Cloud Configuration
+- [ ] Solder power components (2S BMS, AMS1117-5.0V), ESP32-C3 Super Mini, and passive filters onto PCB.
+- [ ] Mount external sensors (BME680, INA219, GP2Y1010AU0F) and ST7735 display onto the board.
+- [ ] Measure voltage rails to verify stable operation under battery load.
+- [ ] Flash bring-up firmware to validate PCB pinouts, I2C bus addressing, and SPI screen.
+- [ ] Configure Google Firebase project, Realtime Database (RTDB), and security access rules.
 
-### Week 5: Acoustic Alarm Thresholding & Power Profiling
-- [ ] Calibrate dynamic acoustic alarm patterns (Warning vs. Critical alarm for PM2.5 and low battery).
-- [ ] Measure active current draw vs. idle current draw across operating modes using INA219.
-- [ ] Benchmark battery operating life under varying Wi-Fi transmission intervals (5s, 15s, 60s).
+### Week 8: Firebase Realtime Sync, Acoustic Alerting & 3D Packaging
+- [ ] Connect ESP32-C3 to local Wi-Fi and push JSON telemetry to Firebase RTDB every 5 seconds.
+- [ ] Connect Web Dashboard to Firebase via WebSocket for live graph updates.
+- [ ] Assemble NPN transistor circuit for 5V active buzzer and implement threshold alarm logic (PM2.5/VOC/Battery).
+- [ ] 3D print enclosure body and faceplate with airflow channels for sensors.
+- [ ] Fit assembled board, battery pack, and display securely inside the enclosure.
 
-### Week 6: 24-Hour Continuous Testing & Multi-Sensor Calibration
-- [ ] Conduct continuous 24-hour stability bench run without memory leaks or Wi-Fi drops.
-- [ ] Calibrate Sharp GP2Y1010AU0F zero-dust baseline voltage in a sealed clean chamber.
-- [ ] Evaluate Bosch BME680 gas resistance baseline stabilization and thermal compensation.
-- [ ] Audit Firebase security rules and real-time database transmission efficiency.
-
-### Week 7: Protective Enclosure Design & Mechanical Assembly
-- [ ] 3D CAD design of compact station enclosure with isolated sensor airflow channels.
-- [ ] 3D print enclosure body and faceplate for 1.8" ST7735 TFT and external Type-C port.
-- [ ] Assemble sensor board, 2S 18650 battery pack, and BMS inside enclosure with secure standoffs.
-
-### Week 8: Environmental Field Testing & Long-Term Evaluation
-- [ ] Deploy assembled IoT station in distinct indoor environments (office, kitchen, laboratory).
-- [ ] Log real-time air quality events (cooking fumes, dust disturbance, ventilation changes).
-- [ ] Record empirical battery discharge curve and compare against theoretical 2S model.
-
-### Week 9: Engineering Documentation & Report Writing
-- [ ] Author **Chapter 3: Detailed Hardware & Software Design**.
-- [ ] Author **Chapter 4: Implementation, Testing & Experimental Evaluation**.
-- [ ] Author **Chapter 5: Conclusion & Future Work**.
-
-### Week 10: Final System Audit & Project Defense
-- [ ] Comprehensive codebase audit, repository polishing, and release tagging (`v1.0.0`).
-- [ ] Record end-to-end video demonstration showcasing sensor detection, cloud streaming, and web graphs.
-- [ ] Prepare technical defense presentation slides and final submission deliverables.
+### Week 9: Verification, Final Academic Report & Project Defense
+- [ ] Run continuous 24-hour stability bench test without disconnection or memory leaks.
+- [ ] Measure operating current draw across active Wi-Fi states and evaluate battery autonomy.
+- [ ] Complete **Chapter 3: Detailed Hardware & Software Design**.
+- [ ] Complete **Chapter 4: Implementation, Testing & Experimental Evaluation**.
+- [ ] Complete **Chapter 5: Conclusion & Future Work**.
+- [ ] Conduct final codebase audit, prepare presentation slide deck, record product video demo, and deliver project defense.

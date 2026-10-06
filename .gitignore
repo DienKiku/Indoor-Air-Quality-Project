@@ -35,3 +35,73 @@ desktop.ini
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+PS C:\PROJECT\air_quality_app> Get-Content .gitignore
+# PlatformIO
+.pio
+.pioenvs
+.piolibdeps
+
+# VS Code & IDEs
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Secrets & Environment Configurations
+*.env
+*.env.local
+*.key
+*.pem
+
+# Build artifacts & Binaries
+*.bin
+*.elf
+*.hex
+*.o
+*.a
+*.d
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Data
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+
+# Generated platform files
+android/.gradle/
+ios/Pods/
+macos/Pods/
+
+# Local Android config
+android/local.properties
+
+# Flutter generated iOS/macOS files
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+
+macos/Flutter/ephemeral/
+
+# Flutter generated plugin registrants
+android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+ios/Runner/GeneratedPluginRegistrant.h
+ios/Runner/GeneratedPluginRegistrant.m

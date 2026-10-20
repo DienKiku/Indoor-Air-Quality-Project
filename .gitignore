@@ -93,6 +93,9 @@ macos/Pods/
 
 # Local Android config
 android/local.properties
+google-services.json
+*.apk
+android/.kotlin/
 
 # Flutter generated iOS/macOS files
 ios/Flutter/Generated.xcconfig

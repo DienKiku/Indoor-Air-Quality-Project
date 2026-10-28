@@ -1,0 +1,20 @@
+name: air_quality_app
+description: Flutter mobile app for the ESP32-C3 air quality station.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^4.15.0
+  firebase_database: ^12.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

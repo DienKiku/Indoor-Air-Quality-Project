@@ -127,3 +127,16 @@ This repository is organized into distinct functional directories:
 
 ## 6. License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+---
+
+## 7. Demo Video
+
+Watch the demonstration of the Indoor Air Quality (IAQ) & Energy Monitoring IoT System.
+
+[![Watch Demo on YouTube](https://img.shields.io/badge/YouTube-Watch%20Demo-red?logo=youtube)](https://youtube.com/shorts/OdTZOuBivy0)
+
+**Video Link:** [Indoor Air Quality System - Demo](https://youtube.com/shorts/OdTZOuBivy0)
+
+---
